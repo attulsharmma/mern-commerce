@@ -2,10 +2,12 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors'
+import { authRouter } from "./routes/auth/auth-routes.js";
 
 const startMongoDb = async()=>{
     try {
-    const connection = await mongoose.connect(`mongodb+srv://attulsharmma:Ah9jkxMpSZy2iPzj@cluster0.vhujjtd.mongodb.net/`);
+ 
+    const con = await mongoose.connect(`mongodb://localhost:27017/`);
     console.log("SERVER CONNECTED")
 } catch (error) {
     console.log(error)
@@ -32,6 +34,7 @@ app.use(cors({
 
 app.use(cookieParser())
 app.use(express.json())
+app.use("/api/auth",authRouter)
 
 
 app.listen(PORT,()=>{

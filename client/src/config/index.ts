@@ -2,7 +2,7 @@ import type { FormControl } from "@/components/common/form";
 
 export const registerFormControls :FormControl[]= [
   {
-    name: "userName",
+    name: "username",
     label: "User Name",
     placeholder: "Enter your user name",
     componentType: "input",

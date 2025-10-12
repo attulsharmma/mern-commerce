@@ -17,9 +17,9 @@ function AuthLogin() {
 //   const dispatch = useDispatch();
  
 
-  function onSubmit(event) {
+  function onSubmit(event: React.FormEvent) {
     event.preventDefault();
-
+    console.log(formData,"formData")
     // dispatch(loginUser(formData)).then((data) => {
     //   if (data?.payload?.success) {
     //     toast.success(
