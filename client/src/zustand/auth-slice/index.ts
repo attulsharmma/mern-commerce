@@ -22,7 +22,6 @@ export const authSlice: StateCreator<
         const current = get().auth;
         const currentUser = get().auth.user;
         const isAuthenticated = get().auth.isAuthenticated;
-        console.log({currentUser})
       if (isAuthenticated && currentUser) {
         set({auth:{...current, user: currentUser, token, isAuthenticated }});
       } else {

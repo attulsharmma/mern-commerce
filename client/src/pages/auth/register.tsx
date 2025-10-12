@@ -1,38 +1,34 @@
 import CommonForm from "@/components/common/form";
-// import { useToast } from "@/components/ui/toaster";
-import { loginFormControls, registerFormControls } from "@/config";
-// import { loginUser } from "@/store/auth-slice";
+import { registerFormControls } from "@/config";
+import { apiWrapper } from "@/services/apiWrapper";
+import { registerUser } from "@/services/auth/auth.services";
 import { useState } from "react";
-// import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner"
-
 const initialState = {
-  userName:"",
+  username: "",
   email: "",
   password: "",
 };
-
 function AuthLogin() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState(initialState);
-//   const dispatch = useDispatch();
- 
-
-  function onSubmit(event) {
+  const [isLoading, setIsLoading] = useState(false)
+  async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
+    try {
+      setIsLoading(true)
+      const response = await apiWrapper(() => registerUser(formData))
+      if (response?.data.success) {
+        toast.success(response?.data.message ?? "User registered successfully")
+        navigate("/auth/login")
 
-    // dispatch(loginUser(formData)).then((data) => {
-    //   if (data?.payload?.success) {
-    //     toast.success(
-    //       data?.payload?.message,
-
-    //     );
-    //   } else {
-    //     toast.error( data?.payload?.message)
-    //   }
-    // });
+      }
+    }
+    finally {
+      setIsLoading(false)
+    }
   }
-
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
@@ -55,9 +51,10 @@ function AuthLogin() {
         formData={formData}
         setFormData={setFormData}
         onSubmit={onSubmit}
+        isBtnDisabled={!!isLoading}
+        isLoadingButton={!!isLoading}
       />
     </div>
   );
 }
-
 export default AuthLogin;
