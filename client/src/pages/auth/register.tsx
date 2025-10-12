@@ -2,6 +2,7 @@ import CommonForm from "@/components/common/form";
 import { registerFormControls } from "@/config";
 import { apiWrapper } from "@/services/apiWrapper";
 import { registerUser } from "@/services/auth/auth.services";
+import { useStore } from "@/zustand";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner"
@@ -10,19 +11,20 @@ const initialState = {
   email: "",
   password: "",
 };
-function AuthLogin() {
+function AuthRegister() {
   const navigate = useNavigate()
+  const { register } = useStore(state => state.auth)
   const [formData, setFormData] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false)
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     try {
       setIsLoading(true)
-      const response = await apiWrapper(() => registerUser(formData))
+      const response = await apiWrapper(() => registerUser(formData),{skipToast:false})
       if (response?.data.success) {
         toast.success(response?.data.message ?? "User registered successfully")
+        register()
         navigate("/auth/login")
-
       }
     }
     finally {
@@ -57,4 +59,4 @@ function AuthLogin() {
     </div>
   );
 }
-export default AuthLogin;
+export default AuthRegister;

@@ -7,10 +7,11 @@ import { authRouter } from "./routes/auth/auth-routes.js";
 const startMongoDb = async()=>{
     try {
  
-    const con = await mongoose.connect(`mongodb://localhost:27017/`);
+    const con = await mongoose.connect(`mongodb://localhost:27017/mern-commerce`);
     console.log("SERVER CONNECTED")
 } catch (error) {
     console.log(error)
+    process.exit(1); 
 }
 }
 startMongoDb()

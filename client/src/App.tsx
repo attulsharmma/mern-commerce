@@ -28,13 +28,9 @@ import UnauthPage from "./pages/unauthorized";
 // import SearchProducts from "./pages/shopping-view/search";
 
 function App() {
-  // const { user, isAuthenticated, isLoading } = useStore(
-  //   (state) => state.auth
-  // );
-
-  const isAuthenticated = false;
-  const user = null
-  const isLoading = false;
+  const { user, isAuthenticated, isLoading } = useStore(
+    (state) => state.auth
+  );
   // useEffect(() => {
   //   dispatch(checkAuth());
   // }, [dispatch]);

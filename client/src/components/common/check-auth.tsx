@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 interface ICheckAUthProps{
     isAuthenticated:boolean,
-    user: {role:string} | null,
+    user: {role:string,email:string,id:string} | null,
     children?:JSX.Element
 }
 function CheckAuth({ isAuthenticated, user, children }: ICheckAUthProps) {

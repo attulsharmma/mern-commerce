@@ -1,12 +1,14 @@
+import type { ApiWrapperOptions } from "../apiWrapper"
 import axiosInstance from "../axiosInstanceProvider"
-import { REGISTER_USER_URL, type IUserRegisterPayload } from "./auth.constants"
+import { LOGIN_USER_URL, REGISTER_USER_URL, type IUserLoginPayload, type IUserRegisterPayload } from "./auth.constants"
+    
 
 
 export const registerUser = async(payload:IUserRegisterPayload)=>{
-    try {
         const response  = await axiosInstance.post(REGISTER_USER_URL,payload)
        return response
-    } catch (error) {
-        console.log(error)
-    }
+}
+export const loginUser = async(payload:IUserLoginPayload)=>{
+       const response  = await axiosInstance.post(LOGIN_USER_URL,payload)
+       return response
 }

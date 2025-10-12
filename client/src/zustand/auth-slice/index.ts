@@ -1,10 +1,11 @@
 import { type StateCreator } from "zustand";
 export interface AuthState {
-  user: {role:string } | null;
+  user: {email: string, password:string } | null;
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (user: {role:string} | null, token: string) => void;
+  login: (user: {email: string, password:string} | null, token: string) => void;
+  register: () => void;
   logout: () => void;
 }
 export const authSlice: StateCreator<
@@ -18,8 +19,13 @@ export const authSlice: StateCreator<
     token: null,
     isAuthenticated: false,
     isLoading: false,
-    login: (user, token) => {
+    register: () => {
         const current = get().auth;
+        set({auth:{...current, user: null,isAuthenticated: false, token:null, isLoading:false  }});
+    },
+    login: (user, token) => {
+      const current = get().auth;
+      
         const currentUser = get().auth.user;
         const isAuthenticated = get().auth.isAuthenticated;
       if (isAuthenticated && currentUser) {
@@ -28,6 +34,7 @@ export const authSlice: StateCreator<
         console.log({user})
         set({auth:{ ...current,user, token, isAuthenticated: true }});
       }
+      
     },
     logout: () => {
         const current = get().auth;
@@ -35,6 +42,4 @@ export const authSlice: StateCreator<
     },
   };
 };
-
-// set((state) => ({ auth: { ...state.auth, user: name } }));
 
