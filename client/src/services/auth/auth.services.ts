@@ -1,4 +1,3 @@
-import type { ApiWrapperOptions } from "../apiWrapper"
 import axiosInstance from "../axiosInstanceProvider"
 import { LOGIN_USER_URL, REGISTER_USER_URL, type IUserLoginPayload, type IUserRegisterPayload } from "./auth.constants"
     

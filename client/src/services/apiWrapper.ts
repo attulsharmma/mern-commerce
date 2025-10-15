@@ -13,6 +13,6 @@ export async function apiWrapper<T>(fn: () => Promise<T>, options?: ApiWrapperOp
     if(!options?.skipToast){
       toast.error(message);
     }
-    return null;
+    throw new Error(message);
   }
 }

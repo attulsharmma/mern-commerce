@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
-import { useStore } from "./zustand";
+// import { useStore } from "./redux";
 import { Skeleton } from "@/components/ui/skeleton";
 import AuthRegister from "./pages/auth/register";
 // import AdminLayout from "./components/admin-view/layout";
@@ -18,6 +18,8 @@ import ShoppingListing from "./pages/shopping-view/listing";
 import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingAccount from "./pages/shopping-view/account";
 import UnauthPage from "./pages/unauthorized";
+import { useSelector } from "react-redux";
+import type { RootState } from "./redux";
 
 // import UnauthPage from "./pages/unauth-page";
 // import { useDispatch, useSelector } from "react-redux";
@@ -28,8 +30,8 @@ import UnauthPage from "./pages/unauthorized";
 // import SearchProducts from "./pages/shopping-view/search";
 
 function App() {
-  const { user, isAuthenticated, isLoading } = useStore(
-    (state) => state.auth
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state:RootState) => state.auth
   );
   // useEffect(() => {
   //   dispatch(checkAuth());
@@ -37,7 +39,7 @@ function App() {
 
   if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
 
-  console.log(isLoading, user);
+  // console.log(isLoading, user);
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">

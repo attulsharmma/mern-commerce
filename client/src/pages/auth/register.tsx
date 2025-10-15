@@ -2,10 +2,12 @@ import CommonForm from "@/components/common/form";
 import { registerFormControls } from "@/config";
 import { apiWrapper } from "@/services/apiWrapper";
 import { registerUser } from "@/services/auth/auth.services";
-import { useStore } from "@/zustand";
+import { type RootState } from "@/redux";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner"
+import { useDispatch, useSelector } from "react-redux"
+import { setError, setLoading, setUser } from "@/redux/auth-slice";
 const initialState = {
   username: "",
   email: "",
@@ -13,22 +15,26 @@ const initialState = {
 };
 function AuthRegister() {
   const navigate = useNavigate()
-  const { register } = useStore(state => state.auth)
+  const dispatch = useDispatch();
+  const { isLoading: isLoadingRegister, } = useSelector((state: RootState) => state.auth)
   const [formData, setFormData] = useState(initialState);
-  const [isLoading, setIsLoading] = useState(false)
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     try {
-      setIsLoading(true)
-      const response = await apiWrapper(() => registerUser(formData),{skipToast:false})
-      if (response?.data.success) {
+      dispatch(setLoading(true))
+      const response = await apiWrapper(() => registerUser(formData), { skipToast: false })
+      if (response?.data?.success) {
         toast.success(response?.data.message ?? "User registered successfully")
-        register()
+        dispatch(setUser(null))
         navigate("/auth/login")
+      }
+      else {
+        dispatch(setError(true))
+        console.log(response)
       }
     }
     finally {
-      setIsLoading(false)
+      dispatch(setLoading(false))
     }
   }
   return (
@@ -53,8 +59,8 @@ function AuthRegister() {
         formData={formData}
         setFormData={setFormData}
         onSubmit={onSubmit}
-        isBtnDisabled={!!isLoading}
-        isLoadingButton={!!isLoading}
+        isBtnDisabled={!!isLoadingRegister}
+        isLoadingButton={!!isLoadingRegister}
       />
     </div>
   );

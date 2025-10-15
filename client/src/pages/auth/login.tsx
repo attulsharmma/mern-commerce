@@ -1,38 +1,38 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "sonner"
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/redux";
+import { setError, setLoading, setUser } from "@/redux/auth-slice";
 import CommonForm from "@/components/common/form";
-// import { useToast } from "@/components/ui/toaster";
 import { loginFormControls } from "@/config";
 import { apiWrapper } from "@/services/apiWrapper";
 import { loginUser } from "@/services/auth/auth.services";
-import { useStore } from "@/zustand";
-// import { loginUser } from "@/store/auth-slice";
-import { useState } from "react";
-// import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { toast } from "sonner"
 const initialState = {
   email: "",
   password: "",
 };
 function AuthLogin() {
- 
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState(initialState);
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useStore(state => state.auth)
+  const { isLoading } = useSelector((state: RootState) => state.auth)
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     try {
-     setIsLoading(true)
-      const resposne = await apiWrapper(() => loginUser(formData),{skipToast:false})
+      dispatch(setLoading(true))
+      const resposne = await apiWrapper(() => loginUser(formData), { skipToast: false })
       if (resposne?.data.success) {
         toast.success(resposne?.data?.message || "")
-        login(resposne.data.user,"")
-        
+        dispatch(setUser(resposne.data.user))
+      }else{
+        dispatch(setError(true))
       }
     } catch (error) {
       console.log(error)
+      dispatch(setError(true))
     }
-    finally{
-        setIsLoading(false)
+    finally {
+      dispatch(setLoading(false))
     }
   }
   return (
