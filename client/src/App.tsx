@@ -1,8 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
-// import { useStore } from "./redux";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import AuthRegister from "./pages/auth/register";
 // import AdminLayout from "./components/admin-view/layout";
 import CheckAuth from "./components/common/check-auth";
@@ -18,11 +17,14 @@ import ShoppingListing from "./pages/shopping-view/listing";
 import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingAccount from "./pages/shopping-view/account";
 import UnauthPage from "./pages/unauthorized";
-import { useSelector } from "react-redux";
 import type { RootState } from "./redux";
+import {  useSelector } from "react-redux";
+import { useEffect } from "react";
+
+import useCheckLoggedInUser from "./hooks/useCheckLoggedInUser";
+
 
 // import UnauthPage from "./pages/unauth-page";
-// import { useDispatch, useSelector } from "react-redux";
 // import { useEffect } from "react";
 // import { checkAuth } from "./store/auth-slice";
 // import PaypalReturnPage from "./pages/shopping-view/paypal-return";
@@ -30,14 +32,15 @@ import type { RootState } from "./redux";
 // import SearchProducts from "./pages/shopping-view/search";
 
 function App() {
-  const { user, isAuthenticated, isLoading } = useSelector(
+  const { user, isAuthenticated } = useSelector(
     (state:RootState) => state.auth
   );
-  // useEffect(() => {
-  //   dispatch(checkAuth());
-  // }, [dispatch]);
+ const checkUserLoggedIn = useCheckLoggedInUser()
+  useEffect(() => {
+   checkUserLoggedIn()
+  }, []);
 
-  if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+  // if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
 
   // console.log(isLoading, user);
 
@@ -89,7 +92,7 @@ function App() {
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="account" element={<ShoppingAccount />} />
-          {/*     <Route path="paypal-return" element={<PaypalReturnPage />} />
+          {/*<Route path="paypal-return" element={<PaypalReturnPage />} />
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="search" element={<SearchProducts />} /> */}
         </Route>

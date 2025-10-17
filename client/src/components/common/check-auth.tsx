@@ -1,15 +1,12 @@
 import type { JSX } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-interface ICheckAUthProps{
-    isAuthenticated:boolean,
-    user: {role:string,email:string,id:string} | null,
-    children?:JSX.Element
+interface ICheckAUthProps {
+  isAuthenticated: boolean,
+  user: { role: string, email: string, id: string } | null,
+  children?: JSX.Element
 }
 function CheckAuth({ isAuthenticated, user, children }: ICheckAUthProps) {
   const location = useLocation();
-
-  console.log(location.pathname, isAuthenticated);
-
   if (location.pathname === "/") {
     if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
@@ -21,7 +18,6 @@ function CheckAuth({ isAuthenticated, user, children }: ICheckAUthProps) {
       }
     }
   }
-
   if (
     !isAuthenticated &&
     !(
@@ -31,7 +27,6 @@ function CheckAuth({ isAuthenticated, user, children }: ICheckAUthProps) {
   ) {
     return <Navigate to="/auth/login" />;
   }
-
   if (
     isAuthenticated &&
     (location.pathname.includes("/login") ||
@@ -43,7 +38,6 @@ function CheckAuth({ isAuthenticated, user, children }: ICheckAUthProps) {
       return <Navigate to="/shop/home" />;
     }
   }
-
   if (
     isAuthenticated &&
     user?.role !== "admin" &&
@@ -51,7 +45,6 @@ function CheckAuth({ isAuthenticated, user, children }: ICheckAUthProps) {
   ) {
     return <Navigate to="/unauth-page" />;
   }
-
   if (
     isAuthenticated &&
     user?.role === "admin" &&
@@ -59,8 +52,6 @@ function CheckAuth({ isAuthenticated, user, children }: ICheckAUthProps) {
   ) {
     return <Navigate to="/admin/dashboard" />;
   }
-
   return <>{children}</>;
 }
-
 export default CheckAuth;

@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner"
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux";
-import { setError, setLoading, setUser } from "@/redux/auth-slice";
 import CommonForm from "@/components/common/form";
 import { loginFormControls } from "@/config";
 import { apiWrapper } from "@/services/apiWrapper";
 import { loginUser } from "@/services/auth/auth.services";
+import { setLoadingLogin, setLoginError, setLoginUser } from "@/redux/auth-slice";
 const initialState = {
   email: "",
   password: "",
@@ -15,24 +15,24 @@ const initialState = {
 function AuthLogin() {
   const dispatch = useDispatch()
   const [formData, setFormData] = useState(initialState);
-  const { isLoading } = useSelector((state: RootState) => state.auth)
+  const { isLoadingLogin: isLoading } = useSelector((state: RootState) => state.auth)
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     try {
-      dispatch(setLoading(true))
+      dispatch(setLoadingLogin(true))
       const resposne = await apiWrapper(() => loginUser(formData), { skipToast: false })
       if (resposne?.data.success) {
         toast.success(resposne?.data?.message || "")
-        dispatch(setUser(resposne.data.user))
+        dispatch(setLoginUser(resposne.data.user))
       }else{
-        dispatch(setError(true))
+        dispatch(setLoginError(true))
       }
     } catch (error) {
       console.log(error)
-      dispatch(setError(true))
+      dispatch(setLoginError(true))
     }
     finally {
-      dispatch(setLoading(false))
+      dispatch(setLoadingLogin(false))
     }
   }
   return (

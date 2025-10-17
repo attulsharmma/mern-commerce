@@ -5,14 +5,11 @@ import { Provider } from "react-redux";
 import './index.css'
 import App from './App.tsx'
 import store from './redux/index.ts';
-
-
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-  <Provider store={store}>
-    <App />
-
-  </Provider>
-    <Toaster richColors/>
+    <Provider store={store}>
+      <App />
+    </Provider>
+    <Toaster richColors />
   </BrowserRouter>,
 )

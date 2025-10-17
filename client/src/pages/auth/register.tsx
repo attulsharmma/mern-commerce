@@ -7,7 +7,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner"
 import { useDispatch, useSelector } from "react-redux"
-import { setError, setLoading, setUser } from "@/redux/auth-slice";
+import { setLoadingRegister, setRegisterError, setRegisterUser } from "@/redux/auth-slice";
+
 const initialState = {
   username: "",
   email: "",
@@ -16,25 +17,25 @@ const initialState = {
 function AuthRegister() {
   const navigate = useNavigate()
   const dispatch = useDispatch();
-  const { isLoading: isLoadingRegister, } = useSelector((state: RootState) => state.auth)
+  const { isLoadingRegister: isLoading, } = useSelector((state: RootState) => state.auth)
   const [formData, setFormData] = useState(initialState);
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     try {
-      dispatch(setLoading(true))
+      dispatch(setLoadingRegister(true))
       const response = await apiWrapper(() => registerUser(formData), { skipToast: false })
       if (response?.data?.success) {
         toast.success(response?.data.message ?? "User registered successfully")
-        dispatch(setUser(null))
+        dispatch(setRegisterUser(null))
         navigate("/auth/login")
       }
       else {
-        dispatch(setError(true))
+        dispatch(setRegisterError(true))
         console.log(response)
       }
     }
     finally {
-      dispatch(setLoading(false))
+      dispatch(setLoadingRegister(false))
     }
   }
   return (
@@ -59,8 +60,8 @@ function AuthRegister() {
         formData={formData}
         setFormData={setFormData}
         onSubmit={onSubmit}
-        isBtnDisabled={!!isLoadingRegister}
-        isLoadingButton={!!isLoadingRegister}
+        isBtnDisabled={!!isLoading}
+        isLoadingButton={!!isLoading}
       />
     </div>
   );
