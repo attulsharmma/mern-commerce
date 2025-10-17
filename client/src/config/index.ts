@@ -1,6 +1,12 @@
 import type { FormControl } from "@/components/common/form";
-
-export const registerFormControls :FormControl[]= [
+import type { ReactElement } from "react";
+export interface MenuItems {
+  id: string,
+  icon?: ReactElement,
+  label: string,
+  path: string
+}
+export const registerFormControls: FormControl[] = [
   {
     name: "username",
     label: "User Name",
@@ -23,7 +29,7 @@ export const registerFormControls :FormControl[]= [
     type: "password",
   },
 ];
-export const loginFormControls:FormControl[] = [
+export const loginFormControls: FormControl[] = [
   {
     name: "email",
     label: "Email",
