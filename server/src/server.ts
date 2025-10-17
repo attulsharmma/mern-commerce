@@ -2,8 +2,17 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors'
-import { authRouter } from "./routes/auth/auth-routes.js";
 
+import { authRouter } from "./routes/auth/auth-routes.js";
+import dotenv from "dotenv";
+dotenv.config();
+process.on("uncaughtException", err => {
+  console.error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", err => {
+  console.error("Unhandled Rejection:", err);
+});
 const startMongoDb = async()=>{
     try {
  
