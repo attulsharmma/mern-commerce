@@ -6,7 +6,7 @@ const initialState = {
   // Loading states
   isLoadingLogin: false,
   isLoadingRegister: false,
-  isLoadingCheckAuth: false,
+  isLoadingCheckAuth: true,
   // Error states
   errorLogin: null,
   errorRegister: null,
