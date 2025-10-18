@@ -57,7 +57,7 @@ const AdminProducts = () => {
           onInteractOutside={(e) => e.preventDefault()}
         >
           <SheetHeader className="px-5">Add New Product</SheetHeader>
-          <div className="py-6 px-5">
+          <div className="pb-4 px-5">
             <ImageUpload
               imageFile={imageFile}
               setImageFile={setImageFile}
