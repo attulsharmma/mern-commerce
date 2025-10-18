@@ -62,9 +62,11 @@ const authSlice = createSlice({
     logOut: (state) => {
       state.user = null;
       state.isAuthenticated = false;
+      //loading
       state.isLoadingLogin = false;
       state.isLoadingRegister = false;
       state.isLoadingCheckAuth = false;
+      //error
       state.errorLogin = null;
       state.errorRegister = null;
       state.errorCheckAuth = null;
@@ -81,6 +83,6 @@ export const {
   setLoginUser,
   setRegisterUser,
   setCheckAuthUser,
-  logOut
+  logOut,
 } = authSlice.actions;
 export default authSlice.reducer;
