@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import useCheckLoggedInUser from "./hooks/useCheckLoggedInUser";
 import { SkeletonDemo } from "./components/common/skeleton-loading";
+
 // import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 // import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 // import SearchProducts from "./pages/shopping-view/search";
@@ -28,9 +29,9 @@ function App() {
   const { user, isAuthenticated, isLoadingCheckAuth } = useSelector(
     (state: RootState) => state.auth
   );
-  const checkUserLoggedIn = useCheckLoggedInUser()
+  const checkUserLoggedIn = useCheckLoggedInUser();
   useEffect(() => {
-    checkUserLoggedIn()
+    checkUserLoggedIn();
   }, []);
   if (isLoadingCheckAuth) return <SkeletonDemo />;
 
@@ -57,11 +58,13 @@ function App() {
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
         </Route>
-        <Route path="/admin" element={
-          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-            <AdminLayout />
-          </CheckAuth>
-        }
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />

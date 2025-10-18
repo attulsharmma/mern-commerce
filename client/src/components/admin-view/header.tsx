@@ -3,12 +3,17 @@ import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { logOut } from "@/redux/auth-slice";
 import { logoutUser } from "@/services/auth/auth.services";
-
-const AdminHeader = () => {
+interface IAdminHeaderProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const AdminHeader = ({ setOpen }: IAdminHeaderProps) => {
   const dispatch = useDispatch();
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-background border-b">
-      <Button className="lg:hidden sm:block cusror-pointer">
+      <Button
+        className="lg:hidden sm:block cursor-pointer"
+        onClick={() => setOpen(true)}
+      >
         <TextAlignJustify />
         <span className="sr-only">Toggle Menu</span>
       </Button>
