@@ -3,8 +3,8 @@ import { DEFAULT_ERROR_MESSAGE, NOT_AUTHORIZED_ERROR_MESSAGE } from "../../const
 import {  Request, Response } from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-import { User } from "../../models/User.js";
-import { IUser } from "../../models/user.types.js";
+import { User } from "../../models/User/User.js";
+import { IUser } from "../../models/User/user.types.js";
 export const registerUser = async (req: Request, res: Response) => {
     const {
         username, email, password
