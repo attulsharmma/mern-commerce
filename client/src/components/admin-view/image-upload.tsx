@@ -1,25 +1,37 @@
-import { useRef, type ChangeEvent, type DragEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  type ChangeEvent,
+  type DragEvent,
+} from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import axiosInstance from "@/services/axiosInstanceProvider";
 
 interface ImageUploadProps {
   imageFile: File | null;
   setImageFile: React.Dispatch<React.SetStateAction<File | null>>;
   uploadedImageUrl: string;
   setUploadedImageUrl: React.Dispatch<React.SetStateAction<string>>;
+  imageLoadingState: boolean;
+  setImageLoadingState: React.Dispatch<React.SetStateAction<boolean>>;
+  isEditMode: boolean;
 }
 const ImageUpload = ({
   imageFile,
   setImageFile,
   uploadedImageUrl,
   setUploadedImageUrl,
+  imageLoadingState,
+  setImageLoadingState,
+  isEditMode = false,
 }: ImageUploadProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.files);
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setImageFile?.(selectedFile);
@@ -43,12 +55,37 @@ const ImageUpload = ({
       inputRef.current.value = "";
     }
   };
+  const uploadImageToCloudinary = useCallback(async () => {
+    setImageLoadingState(true);
+    const data = new FormData();
+    data.append("my_file", imageFile!);
+    const response = await axiosInstance.post(
+      "admin/products/upload-image",
+      data,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
 
+    if (response?.data?.success) {
+      setUploadedImageUrl(response.data.result.url);
+      setImageLoadingState(false);
+    }
+  }, [imageFile]);
+  useEffect(() => {
+    if (!isEditMode) {
+      if (imageFile !== null) {
+        uploadImageToCloudinary();
+      }
+    }
+  }, [imageFile, uploadImageToCloudinary, isEditMode]);
   return (
     <div className="w-full max-w-md mx-auto mb-4">
       <Label className="mb-2.5 block">Upload Image</Label>
       <div
-        className="border-2 border-dashed rounded-lg p-4"
+        className={`border-2 border-dashed rounded-lg p-4 ${
+          isEditMode ? "opacity-60" : ""
+        }`}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
@@ -58,11 +95,14 @@ const ImageUpload = ({
           className="hidden"
           ref={inputRef}
           onChange={handleImageFileChange}
+          disabled={isEditMode}
         />
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
-            className="flex flex-col items-center justify-center h-32 cursor-pointer"
+            className={`flex flex-col items-center justify-center h-32 ${
+              isEditMode ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
           >
             <UploadCloudIcon className="w-10 h10 text-muted-foreground mb-2" />
             <span>Drag and drop or click to upload image</span>

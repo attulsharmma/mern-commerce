@@ -58,7 +58,8 @@ export const loginUser = async (req: Request, res: Response) => {
         const token = jwt.sign({
             id: user._id,
             role: user.role,
-            email: user.email
+            email: user.email,
+            username: user.username
         }, SECTET_KEY, {
             expiresIn: "60mins"
         })
@@ -68,7 +69,8 @@ export const loginUser = async (req: Request, res: Response) => {
             user: {
                 email: user.email,
                 role: user.role,
-                id: user._id
+                id: user._id,
+                username: user.username
             }
         })
     } catch (error) {

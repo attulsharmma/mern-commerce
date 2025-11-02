@@ -34,7 +34,6 @@ export const addProduct = async (req: Request, res: Response) => {
   try {
     const validatedProductData = createProductSchema.strict().parse(req.body);
     const newProduct = new Product(validatedProductData);
-
     await newProduct.save();
     res.status(201).json({
       success: true,
@@ -59,7 +58,7 @@ export const addProduct = async (req: Request, res: Response) => {
       });
     }
     
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error Occured",
     });
@@ -69,6 +68,7 @@ export const addProduct = async (req: Request, res: Response) => {
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const allProducts = await Product.find();
+    // throw new Error("error")
     res.status(200).json({
       success: true,
       data: allProducts,

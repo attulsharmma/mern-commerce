@@ -24,7 +24,7 @@ export interface FormControl {
   label: string;
   placeholder?: string;
   type?: string;
-  componentType: "input" | "select" | "textarea" ;
+  componentType: "input" | "select" | "textarea";
   options?: SelectOption[];
 }
 
@@ -36,7 +36,7 @@ interface CommonFormProps<T extends Record<string, any>> {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   buttonText?: string;
   isBtnDisabled?: boolean;
-  isLoadingButton?:boolean
+  isLoadingButton?: boolean;
 }
 
 function CommonForm<T extends Record<string, any>>({
@@ -46,7 +46,7 @@ function CommonForm<T extends Record<string, any>>({
   onSubmit,
   buttonText = "Submit",
   isBtnDisabled = false,
-  isLoadingButton= false
+  isLoadingButton = false,
 }: CommonFormProps<T>) {
   function renderInputsByComponentType(control: FormControl) {
     const value = formData[control.name] ?? "";
@@ -127,7 +127,11 @@ function CommonForm<T extends Record<string, any>>({
         ))}
       </div>
 
-      <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">
+      <Button
+        disabled={isBtnDisabled}
+        type="submit"
+        className="mt-2 w-full cursor-pointer"
+      >
         {isLoadingButton ? <Spinner /> : null}
         {buttonText}
       </Button>
